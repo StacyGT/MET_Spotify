@@ -1,0 +1,6 @@
+session_id,series_number,timestamp,target,target_ip,location,network,packets_sent,packets_received,packet_loss_percent,rtt_min_ms,rtt_median_ms,rtt_mean_ms,rtt_max_ms
+20261021_200311,1,2026-10-21T20:03:11+02:00,spotify.com,35.186.224.24,home,wifi,3,0,100.0,,,,
+20261021_200311,2,2026-10-21T20:03:21+02:00,spotify.com,35.186.224.24,home,wifi,3,0,100.0,,,,
+20261021_200311,3,2026-10-21T20:03:31+02:00,spotify.com,35.186.224.24,home,wifi,3,0,100.0,,,,
+20261021_200311,4,2026-10-21T20:03:41+02:00,spotify.com,35.186.224.24,home,wifi,3,0,100.0,,,,
+20261021_200311,5,2026-10-21T20:03:51+02:00,spotify.com,35.186.224.24,home,wifi,3,0,100.0,,,,

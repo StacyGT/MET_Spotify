@@ -1,0 +1,5 @@
+session_id,timestamp,target,url,location,network,total_time_s,http_status,error
+20261023_104248,2026-10-23T10:42:48+02:00,Spotify,https://open.spotify.com/,home,wifi,0.3667,200,
+20261023_104248,2026-10-23T10:43:03+02:00,Spotify,https://open.spotify.com/,home,wifi,0.1113,200,
+20261023_104248,2026-10-23T10:43:18+02:00,Spotify,https://open.spotify.com/,home,wifi,0.3341,200,
+20261023_104248,2026-10-23T10:43:33+02:00,Spotify,https://open.spotify.com/,home,wifi,0.1414,200,

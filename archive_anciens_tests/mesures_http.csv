@@ -1,0 +1,4 @@
+date_heure,site,url,temps_total_s,statut,erreur
+2026-10-21T19:46:14,Wikipedia,https://www.wikipedia.org/,0.2537,403,HTTP 403: Forbidden
+2026-10-21T19:46:29,INSA Lyon,https://www.insa-lyon.fr/,15.0358,,<urlopen error timed out>
+2026-10-21T19:46:29,Spotify,https://spotify.com,0.3709,200,
