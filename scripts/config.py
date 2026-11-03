@@ -17,3 +17,7 @@ INTERVAL_BETWEEN_PROBES = 5 # Pause en secondes entre deux requêtes curl
 
 # Gestion cross-platform du dev/null pour cURL
 NULL_DEVICE = "NUL" if sys.platform.startswith("win") else "/dev/null"
+
+# Cibles et fichiers pour le CDN Media
+TARGET_URL_CDN = "https://i.scdn.co/image/ab67616d0000b27385f02fef32c4a45a305d2331"
+CSV_CDN_PATH = os.path.join(BASE_DIR, "data", "raw", "cdn_measures.csv")

@@ -125,3 +125,67 @@ if __name__ == "__main__":
     net_env = sys.argv[1] if len(sys.argv) > 1 else "test_network"
     print(f"[*] Lancement d'une sonde individuelle sur le réseau: '{net_env}'...")
     run_single_probe(network_label=net_env)
+
+
+#CDN Media Probe
+
+    from config import TARGET_URL_CDN, CSV_CDN_PATH
+
+def run_single_probe_cdn(network_label="quantic"):
+    """
+    Exécute une mesure cURL ciblée sur le CDN Média de Spotify.
+    Calcule le débit utile (Throughput en Mbps) et enregistre le résultat
+    dans 'data/raw/cdn_measures.csv' sans impacter 'raw_measures.csv'.
+    """
+    timestamp = datetime.now().isoformat()
+    
+    # Format cURL : namelookup, connect, appconnect, starttransfer, total, size_download
+    curl_format = "%{time_namelookup},%{time_connect},%{time_appconnect},%{time_starttransfer},%{time_total},%{size_download}\n"
+    
+    # Détection de l'OS pour le paramètre NUL / /dev/null
+    null_output = "NUL" if os.name == 'nt' else "/dev/null"
+    
+    cmd = [
+        "curl", "-o", null_output,
+        "-s", "-w", curl_format,
+        TARGET_URL_CDN
+    ]
+
+    try:
+        output = subprocess.check_output(cmd, text=True, stderr=subprocess.DEVNULL).strip()
+        dns, tcp_conn, tls_conn, ttfb, total_time, size_bytes = map(float, output.split(','))
+
+        # Calculs des phases spécifiques
+        dns_time = dns
+        tcp_connect = max(0.0, tcp_conn - dns) if tcp_conn > 0 else 0.0
+        tls_handshake = max(0.0, tls_conn - tcp_conn) if tls_conn > 0 else 0.0
+        download_time = max(0.0, total_time - ttfb)
+        
+        # Calcul du débit utile (Throughput) en Mbit/s
+        throughput_mbps = (size_bytes * 8.0 / total_time / 1e6) if total_time > 0 else 0.0
+
+        row_data = {
+            "timestamp": timestamp,
+            "network": network_label,
+            "target_url": TARGET_URL_CDN,
+            "dns_time_s": dns_time,
+            "tcp_connect_s": tcp_connect,
+            "tls_handshake_s": tls_handshake,
+            "ttfb_s": ttfb,
+            "download_time_s": download_time,
+            "total_time_s": total_time,
+            "download_size_bytes": size_bytes,
+            "throughput_mbps": throughput_mbps
+        }
+
+        # Écriture propre dans cdn_measures.csv
+        file_exists = os.path.exists(CSV_CDN_PATH)
+        df_row = pd.DataFrame([row_data])
+        df_row.to_csv(CSV_CDN_PATH, mode='a', header=not file_exists, index=False)
+
+        print(f"OK (TTFB: {ttfb*1000:.1f} ms | Débit: {throughput_mbps:.2f} Mbps)")
+        return True
+
+    except Exception as e:
+        print(f"ÉCHEC ({e})")
+        return False
