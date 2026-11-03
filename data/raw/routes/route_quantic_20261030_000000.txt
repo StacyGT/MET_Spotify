@@ -1,0 +1,10 @@
+
+D‚termination de l'itin‚raire vers atc.spotify.map.fastly.net [199.232.83.42]
+avec un maximum de 30 sautsÿ:
+
+  1    <1 ms    <1 ms    <1 ms  10.10.17.1 
+  2     2 ms     2 ms    <1 ms  37.143.55.57 
+  3     *        2 ms     2 ms  185.96.184.98 
+  4  10.10.17.1  rapportsÿ: Impossible de joindre le r‚seau de destination.
+
+Itin‚raire d‚termin‚.
