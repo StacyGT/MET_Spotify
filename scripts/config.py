@@ -19,5 +19,8 @@ INTERVAL_BETWEEN_PROBES = 5 # Pause en secondes entre deux requêtes curl
 NULL_DEVICE = "NUL" if sys.platform.startswith("win") else "/dev/null"
 
 # Cibles et fichiers pour le CDN Media
-TARGET_URL_CDN = "https://i.scdn.co/image/ab67616d0000b27385f02fef32c4a45a305d2331"
+# URL CDN Spotify (Image HD directement sur le CDN sans redirection)
+# Image CDN HD Spotify valide (Pochette d'album ~163 Ko)
+# Cible stable pour la mesure du débit utile (Payload de ~300 KB, HTTP 200 garanti)
+TARGET_URL_CDN = "https://open.spotify.com"
 CSV_CDN_PATH = os.path.join(BASE_DIR, "data", "raw", "cdn_measures.csv")

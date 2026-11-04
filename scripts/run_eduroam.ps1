@@ -6,4 +6,4 @@ python scripts/measure_route.py eduroam
 python scripts/run_cdn_campaign.py eduroam 30
 python scripts/run_campaign.py eduroam 30
 
-Write-Host "`n[✔] Mesures Eduroam terminées avec succès !" -ForegroundColor Green
+Write-Host "`n[OK] Mesures Eduroam terminees avec succes !" -ForegroundColor Green

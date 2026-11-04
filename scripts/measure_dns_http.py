@@ -6,7 +6,7 @@ import pandas as pd
 from datetime import datetime
 
 # Importer configuration globale
-from config import TARGET_HOST, TARGET_URL, CSV_RAW_PATH, NULL_DEVICE
+from config import TARGET_HOST, TARGET_URL, CSV_RAW_PATH, NULL_DEVICE,TARGET_URL_CDN, CSV_CDN_PATH
 
 
 def get_dns_info(host):
@@ -132,36 +132,29 @@ if __name__ == "__main__":
     from config import TARGET_URL_CDN, CSV_CDN_PATH
 
 def run_single_probe_cdn(network_label="quantic"):
-    """
-    Exécute une mesure cURL ciblée sur le CDN Média de Spotify.
-    Calcule le débit utile (Throughput en Mbps) et enregistre le résultat
-    dans 'data/raw/cdn_measures.csv' sans impacter 'raw_measures.csv'.
-    """
     timestamp = datetime.now().isoformat()
     
-    # Format cURL : namelookup, connect, appconnect, starttransfer, total, size_download
-    curl_format = "%{time_namelookup},%{time_connect},%{time_appconnect},%{time_starttransfer},%{time_total},%{size_download}\n"
-    
-    # Détection de l'OS pour le paramètre NUL / /dev/null
+    curl_format = "%{time_namelookup},%{time_connect},%{time_appconnect},%{time_starttransfer},%{time_total},%{size_download},%{http_code}\n"
     null_output = "NUL" if os.name == 'nt' else "/dev/null"
+    curl_bin = "curl.exe" if os.name == 'nt' else "curl"
     
     cmd = [
-        "curl", "-o", null_output,
+        curl_bin, "-L", "-o", null_output,
+        "-A", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
         "-s", "-w", curl_format,
         TARGET_URL_CDN
     ]
 
     try:
         output = subprocess.check_output(cmd, text=True, stderr=subprocess.DEVNULL).strip()
-        dns, tcp_conn, tls_conn, ttfb, total_time, size_bytes = map(float, output.split(','))
+        dns, tcp_conn, tls_conn, ttfb, total_time, size_bytes, http_code = map(float, output.split(','))
 
-        # Calculs des phases spécifiques
         dns_time = dns
         tcp_connect = max(0.0, tcp_conn - dns) if tcp_conn > 0 else 0.0
         tls_handshake = max(0.0, tls_conn - tcp_conn) if tls_conn > 0 else 0.0
         download_time = max(0.0, total_time - ttfb)
         
-        # Calcul du débit utile (Throughput) en Mbit/s
+        # Débit utile (Throughput) en Mbit/s
         throughput_mbps = (size_bytes * 8.0 / total_time / 1e6) if total_time > 0 else 0.0
 
         row_data = {
@@ -178,12 +171,11 @@ def run_single_probe_cdn(network_label="quantic"):
             "throughput_mbps": throughput_mbps
         }
 
-        # Écriture propre dans cdn_measures.csv
         file_exists = os.path.exists(CSV_CDN_PATH)
         df_row = pd.DataFrame([row_data])
         df_row.to_csv(CSV_CDN_PATH, mode='a', header=not file_exists, index=False)
 
-        print(f"OK (TTFB: {ttfb*1000:.1f} ms | Débit: {throughput_mbps:.2f} Mbps)")
+        print(f"OK [HTTP {int(http_code)}] (TTFB: {ttfb*1000:.1f} ms | Taille: {int(size_bytes)} B | Débit: {throughput_mbps:.2f} Mbps)")
         return True
 
     except Exception as e:

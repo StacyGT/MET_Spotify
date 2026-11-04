@@ -1,0 +1,15 @@
+
+D‚termination de l'itin‚raire vers atc.spotify.map.fastly.net [2a04:4e42:6a::810]
+avec un maximum de 30 sautsÿ:
+
+  1     5 ms     4 ms     3 ms  2a0d:e487:31e:fe6a:d176:eddf:82ea:cd50 
+  2     *        *        *     D‚lai d'attente de la demande d‚pass‚.
+  3     *        *        *     D‚lai d'attente de la demande d‚pass‚.
+  4    74 ms    76 ms   102 ms  2a0d:e487:300:c801::3 
+  5    71 ms    26 ms    35 ms  2a01:e00:6003::24 
+  6     *        *        *     D‚lai d'attente de la demande d‚pass‚.
+  7     *        *        *     D‚lai d'attente de la demande d‚pass‚.
+  8     *        *        *     D‚lai d'attente de la demande d‚pass‚.
+  9    41 ms    49 ms    39 ms  2a04:4e42:6a::810 
+
+Itin‚raire d‚termin‚.

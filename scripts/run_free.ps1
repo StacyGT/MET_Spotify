@@ -6,4 +6,4 @@ python scripts/measure_route.py free_mobile
 python scripts/run_cdn_campaign.py free_mobile 30
 python scripts/run_campaign.py free_mobile 30
 
-Write-Host "`n[✔] Mesures Free Mobile terminées avec succès !" -ForegroundColor Green
+Write-Host "`n[OK] Mesures Free Mobile terminees avec succes !" -ForegroundColor Green
